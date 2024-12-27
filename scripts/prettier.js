@@ -43,4 +43,4 @@ files.forEach(file => {
 if (didError) {
   process.exit(1);
 }
-console.log(chalk.hex('#1890FF')('prettier success!'));
+// console.log(chalk.hex('#1890FF')('prettier success!'));
