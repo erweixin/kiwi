@@ -1,0 +1,167 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`toUpperCase 1`] = `
+[
+  {
+    "file": "/Users/sunguangbiao/work/kiwi/packages/kiwi-cli/src/extract/__mocks__/basic.tsx",
+    "texts": [
+      {
+        "isString": false,
+        "range": {
+          "end": 167,
+          "start": 160,
+        },
+        "text": "你好",
+      },
+      {
+        "isString": true,
+        "range": {
+          "end": 132,
+          "start": 128,
+        },
+        "text": "少年",
+      },
+    ],
+  },
+  {
+    "file": "/Users/sunguangbiao/work/kiwi/packages/kiwi-cli/src/extract/__mocks__/js/basic.js",
+    "texts": [
+      {
+        "isString": true,
+        "range": {
+          "end": 98,
+          "start": 78,
+        },
+        "text": "\${test} [js]模版变量文案",
+      },
+      {
+        "isString": true,
+        "range": {
+          "end": 62,
+          "start": 49,
+        },
+        "text": "[js]初始化变量文案",
+      },
+    ],
+  },
+  {
+    "file": "/Users/sunguangbiao/work/kiwi/packages/kiwi-cli/src/extract/__mocks__/js/basic.jsx",
+    "texts": [
+      {
+        "isString": false,
+        "range": {
+          "end": 143,
+          "start": 119,
+        },
+        "text": "[js] jsx内置文案",
+      },
+      {
+        "isString": true,
+        "range": {
+          "end": 98,
+          "start": 78,
+        },
+        "text": "\${test} [js]模版变量文案",
+      },
+      {
+        "isString": true,
+        "range": {
+          "end": 62,
+          "start": 49,
+        },
+        "text": "[js]初始化变量文案",
+      },
+    ],
+  },
+  {
+    "file": "/Users/sunguangbiao/work/kiwi/packages/kiwi-cli/src/extract/__mocks__/ts/basic.tsx",
+    "texts": [
+      {
+        "isString": false,
+        "range": {
+          "end": 222,
+          "start": 205,
+        },
+        "text": "[js] jsx内置文案",
+      },
+      {
+        "isString": true,
+        "range": {
+          "end": 177,
+          "start": 157,
+        },
+        "text": "\${test} [js]模版变量文案",
+      },
+      {
+        "isString": true,
+        "range": {
+          "end": 141,
+          "start": 128,
+        },
+        "text": "[js]初始化变量文案",
+      },
+    ],
+  },
+  {
+    "file": "/Users/sunguangbiao/work/kiwi/packages/kiwi-cli/src/extract/__mocks__/vue/vue2.vue",
+    "texts": [
+      {
+        "isString": true,
+        "range": {
+          "end": 294,
+          "start": 282,
+        },
+        "text": "vue测试 data",
+      },
+      {
+        "arrf": [
+          undefined,
+          undefined,
+        ],
+        "isString": false,
+        "range": {
+          "end": 185,
+          "start": 179,
+        },
+        "text": "vue测试1",
+      },
+      {
+        "arrf": [
+          179,
+          185,
+        ],
+        "isString": false,
+        "range": {
+          "end": 185,
+          "start": 179,
+        },
+        "text": "vue测试1",
+      },
+      {
+        "arrf": [
+          undefined,
+          undefined,
+        ],
+        "isString": false,
+        "range": {
+          "end": 106,
+          "start": 90,
+        },
+        "text": "vue测试 template 2",
+      },
+      {
+        "arrf": [
+          90,
+          106,
+        ],
+        "isString": false,
+        "range": {
+          "end": 106,
+          "start": 90,
+        },
+        "text": "vue测试 template 2",
+      },
+    ],
+  },
+]
+`;

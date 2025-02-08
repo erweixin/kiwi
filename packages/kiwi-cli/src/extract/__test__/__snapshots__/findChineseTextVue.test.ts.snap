@@ -1,0 +1,62 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`vue current 1`] = `
+[
+  {
+    "arrf": [
+      undefined,
+      undefined,
+    ],
+    "isString": false,
+    "range": {
+      "end": 106,
+      "start": 90,
+    },
+    "text": "vue测试 template 2",
+  },
+  {
+    "arrf": [
+      undefined,
+      undefined,
+    ],
+    "isString": false,
+    "range": {
+      "end": 185,
+      "start": 179,
+    },
+    "text": "vue测试1",
+  },
+  {
+    "arrf": [
+      90,
+      106,
+    ],
+    "isString": false,
+    "range": {
+      "end": 106,
+      "start": 90,
+    },
+    "text": "vue测试 template 2",
+  },
+  {
+    "arrf": [
+      179,
+      185,
+    ],
+    "isString": false,
+    "range": {
+      "end": 185,
+      "start": 179,
+    },
+    "text": "vue测试1",
+  },
+  {
+    "isString": true,
+    "range": {
+      "end": 294,
+      "start": 282,
+    },
+    "text": "vue测试 data",
+  },
+]
+`;

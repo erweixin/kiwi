@@ -9,6 +9,8 @@ import * as babel from '@babel/core';
 import * as babelParser from '@babel/parser';
 import * as babelTraverse from '@babel/traverse';
 import * as babelTypes from '@babel/types';
+import { parse } from '@swc/core';
+// const { parse } = require("@swc/core");
 /** unicode cjk 中日韩文 范围 */
 const DOUBLE_BYTE_REGEX = /[\u4E00-\u9FFF]/g;
 
@@ -75,7 +77,7 @@ function removeFileComment(code, fileName) {
  * 查找 Ts 文件中的中文
  * @param code
  */
-function findTextInTs(code: string, fileName: string) {
+export function findTextInTs(code: string, fileName: string) {
   const matches = [];
   const ast = ts.createSourceFile('', code, ts.ScriptTarget.ES2015, true, ts.ScriptKind.TSX);
 
@@ -164,7 +166,7 @@ function findTextInTs(code: string, fileName: string) {
  * 查找 JS 文件中的中文
  * @Param code
  */
-function findTextInJs(code: string) {
+export function findTextInJs(code: string) {
   const matches = [];
   const ast = babelParser.parse(code, {
     sourceType: 'module',

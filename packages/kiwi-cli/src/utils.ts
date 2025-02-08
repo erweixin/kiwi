@@ -6,8 +6,12 @@ import * as path from 'path';
 import * as _ from 'lodash';
 import * as inquirer from 'inquirer';
 import * as fs from 'fs';
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { pinyin } from 'pinyin-pro';
 import { PROJECT_CONFIG, KIWI_CONFIG_FILE } from './const';
+import { LangchainLLM } from './langchain';
+import { translatePrompt } from './prompt';
+import { TranslationData } from './type';
 const colors = require('colors');
 
 function lookForFiles(dir: string, fileName: string): string {
@@ -161,6 +165,27 @@ function translateText(text, toLang) {
   );
 }
 
+export async function translateTextByLlm(obj: {
+  source_lang: string;
+  target_lang: string;
+  content: string[];
+  glossary?: {
+    [key: string]: string;
+  };
+}): Promise<TranslationData> {
+  const openai = LangchainLLM.getInstance();
+  console.log('----- standard request -----');
+  const config = getProjectConfig();
+  const completion = await openai.chat.completions.create({
+    messages: [
+      { role: 'system', content: translatePrompt },
+      { role: 'user', content: JSON.stringify(obj) }
+    ],
+    model: config.llmApiKey.model
+  });
+  return JSON.parse(completion.choices[0]?.message?.content);
+}
+
 /**
  * 翻译中文
  */
@@ -244,13 +269,16 @@ function flatten(obj, prefix = '') {
  * 获取翻译源类型
  */
 async function getTranslateOriginType() {
-  const { googleApiKey, baiduApiKey } = getProjectConfig();
-  let translateType = ['Google', 'Baidu'];
+  const { googleApiKey, baiduApiKey, llmApiKey } = getProjectConfig();
+  let translateType = ['Google', 'Baidu', 'llm'];
   if (!googleApiKey) {
     translateType = translateType.filter(item => item !== 'Google');
   }
   if (!baiduApiKey || !baiduApiKey.appId || !baiduApiKey.appKey) {
     translateType = translateType.filter(item => item !== 'Baidu');
+  }
+  if (!llmApiKey || !llmApiKey.apiKey || !llmApiKey.baseURL) {
+    translateType = translateType.filter(item => item !== 'llm');
   }
   if (translateType.length === 0) {
     console.log('请配置 googleApiKey 或 baiduApiKey ');

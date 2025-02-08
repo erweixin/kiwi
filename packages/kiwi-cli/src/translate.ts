@@ -11,9 +11,10 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as baiduTranslate from 'baidu-translate';
 import { tsvFormatRows } from 'd3-dsv';
-import { getProjectConfig, getLangDir, withTimeout, translateText } from './utils';
+import { getProjectConfig, getLangDir, withTimeout, translateText, translateTextByLlm } from './utils';
 import { importMessages } from './import';
 import { getAllUntranslatedTexts } from './mock';
+import { invert } from 'lodash';
 
 const CONFIG = getProjectConfig();
 
@@ -26,7 +27,7 @@ function translateTextByBaidu(text, toLang) {
   const {
     baiduApiKey: { appId, appKey },
     baiduLangMap
-  } = CONFIG;
+  } = getProjectConfig();
   return withTimeout(
     new Promise((resolve, reject) => {
       baiduTranslate(
@@ -143,9 +144,22 @@ async function baiduTranslateTexts(untranslatedTexts, toLang) {
  */
 async function runTranslateApi(dstLang: string, origin: string) {
   const untranslatedTexts = getAllUntranslatedTexts(dstLang);
+  const inverted = invert(untranslatedTexts);
   let mocks = {};
   if (origin === 'Google') {
     mocks = await googleTranslateTexts(untranslatedTexts, dstLang);
+  } else if (origin === 'llm') {
+    let llmResult = await translateTextByLlm({
+      source_lang: 'zh-CN',
+      target_lang: dstLang,
+      content: Object.values(untranslatedTexts),
+      glossary: {
+        'Pro Edition': '专业版333' // 可选术语表
+      }
+    });
+    llmResult.translations.forEach(item => {
+      mocks[inverted[item.source]] = item.translated;
+    });
   } else {
     mocks = await baiduTranslateTexts(untranslatedTexts, dstLang);
   }
@@ -178,6 +192,11 @@ async function runTranslateApi(dstLang: string, origin: string) {
 async function translate(origin: string) {
   const langs = CONFIG.distLangs;
   if (origin === 'Google') {
+    const mockPromise = langs.map(lang => {
+      return runTranslateApi(lang, origin);
+    });
+    return Promise.all(mockPromise);
+  } else if (origin === 'llm') {
     const mockPromise = langs.map(lang => {
       return runTranslateApi(lang, origin);
     });

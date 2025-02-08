@@ -17,6 +17,11 @@ export const PROJECT_CONFIG = {
       appId: '',
       appKey: ''
     },
+    llmApiKey: {
+      apiKey: '',
+      baseURL: '',
+      model: ''
+    },
     baiduLangMap: {
       ['en-US']: 'en',
       ['zh-TW']: 'cht'

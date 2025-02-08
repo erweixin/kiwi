@@ -1,0 +1,80 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`js current 1`] = `
+[
+  {
+    "isString": true,
+    "range": {
+      "end": 62,
+      "start": 49,
+    },
+    "text": "[js]初始化变量文案",
+  },
+  {
+    "isString": true,
+    "range": {
+      "end": 98,
+      "start": 78,
+    },
+    "text": "\${test} [js]模版变量文案",
+  },
+]
+`;
+
+exports[`jsx current 1`] = `
+[
+  {
+    "isString": true,
+    "range": {
+      "end": 62,
+      "start": 49,
+    },
+    "text": "[js]初始化变量文案",
+  },
+  {
+    "isString": true,
+    "range": {
+      "end": 98,
+      "start": 78,
+    },
+    "text": "\${test} [js]模版变量文案",
+  },
+  {
+    "isString": false,
+    "range": {
+      "end": 143,
+      "start": 119,
+    },
+    "text": "[js] jsx内置文案",
+  },
+]
+`;
+
+exports[`tsx current 1`] = `
+[
+  {
+    "isString": true,
+    "range": {
+      "end": 141,
+      "start": 128,
+    },
+    "text": "[js]初始化变量文案",
+  },
+  {
+    "isString": true,
+    "range": {
+      "end": 177,
+      "start": 157,
+    },
+    "text": "\${test} [js]模版变量文案",
+  },
+  {
+    "isString": false,
+    "range": {
+      "end": 222,
+      "start": 205,
+    },
+    "text": "[js] jsx内置文案",
+  },
+]
+`;

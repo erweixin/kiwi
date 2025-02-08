@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`toUpperCase 1`] = `
+"{"translations": [
+    {"source": "Cancel", "translated": "取消", "context": "按钮操作"},
+    {"source": "Submit", "translated": "提交", "context": "按钮操作"},
+    {"source": "Are you sure?", "translated": "你确定吗？", "context": "提示"},
+    {"source": "{count} items selected", "translated": "已选{count}项", "plural_rules": {"zh-CN": "数值替换"}},
+    {"source": "Pro Edition", "translated": "专业版 333", "context": "特定术语"}
+  ],
+  "meta": {"detected_source_lang": "en", "timestamp": "2023-12-20T14:30Z"}}"
+`;

@@ -39,7 +39,7 @@ function removeLangsFiles(files: string[]) {
 /**
  * 递归匹配项目中所有的代码的中文
  */
-function findAllChineseText(dir: string) {
+export function findAllChineseText(dir: string) {
   const first = dir.split(',')[0];
   let files = [];
   if (isDirectory(first)) {
