@@ -7,6 +7,7 @@ import { setLineDecorations } from './lineAnnotation';
 import { findChineseText } from './findChineseText';
 import * as minimatch from 'minimatch';
 import { getConfiguration } from './utils';
+import { isUndefined } from 'util';
 
 /**
  * 中文的标记，红框样式
@@ -45,7 +46,11 @@ export function triggerUpdateDecorations(callback?) {
     if (!matchPattern()) {
       return;
     }
-    const { targetStrs, chineseCharDecoration } = updateDecorations();
+    const result = updateDecorations();
+    if (!result) {
+      return 
+    }
+    const { targetStrs, chineseCharDecoration } = result;
     prevChineseCharDecoration = chineseCharDecoration;
     callback(targetStrs);
   }, 500);
@@ -59,7 +64,7 @@ function matchPattern() {
   const pattern = getConfiguration('i18nFilesPattern');
   if (
     activeEditor &&
-    pattern !== '' &&
+    !isUndefined(pattern) &&
     !minimatch(
       activeEditor.document.uri.fsPath.replace(vscode.workspace.workspaceFolders[0].uri.fsPath + '/', ''),
       pattern

@@ -120,10 +120,11 @@
   ],
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./ --skipLibCheck",
+    "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "package": "pnpm vsce package"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",
@@ -131,7 +132,8 @@
     "@types/node": "^16.0.7",
     "husky": "^1.3.1",
     "vscode": "^1.1.6",
-    "@babel/core": "^7.5.5"
+    "@babel/core": "^7.5.5",
+    "esbuild": "^0.13.0"
   },
   "dependencies": {
     "@angular/compiler": "^7.2.0",
@@ -144,12 +146,13 @@
     "globby": "^7.1.1",
     "google-translate": "^2.2.0",
     "lodash": "^4.17.4",
-    "minimatch": "^3.0.4",
+    "minimatch": "3.0.4",
     "pinyin-pro": "^3.3.1",
     "prettier": "^1.16.4",
     "slash2": "^2.0.0",
     "ts-node": "^6.0.3",
     "typescript": "^5.0.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "@babel/preset-typescript": "^7.3.3"
   }
 }

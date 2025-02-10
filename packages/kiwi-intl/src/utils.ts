@@ -3,6 +3,8 @@
  * @author 闻木
  */
 
+import { isObject } from "util";
+
 /**
  * 对string进行属性拦截的通用方法，返回一个ProxyString
  * 对所有值为undefined的属性读取，会返回一个空的ProxyString
@@ -29,6 +31,9 @@ export const getDefaultProxyString = (str = '') => {
  * @param obj
  */
 export const getProxyObj = (obj: object) => {
+  if (!isObject(obj)) {
+    return obj;
+  }
   return new Proxy(obj, {
     get(target, property) {
       const val = target[property];

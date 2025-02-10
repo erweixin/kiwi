@@ -65,14 +65,8 @@ export function findMatchKey(langObj, text) {
   return null;
 }
 
-/**
- * 获取文件夹下所有文件
- * @function getAllFiles
- * @param  {string} dir Dir path string.
- * @return {string[]} Array with all file names that are inside the directory.
- */
-export const getAllFiles = dir =>
-  fs.readdirSync(dir).reduce((files, file) => {
+export function getAllFiles (dir) {
+  return fs.readdirSync(dir).reduce((files, file) => {
     // 避免读取node_modules造成性能问题
     if (file === 'node_modules') {
       return [...files];
@@ -81,7 +75,7 @@ export const getAllFiles = dir =>
     const isDirectory = fs.statSync(name).isDirectory();
     return isDirectory ? [...files, ...getAllFiles(name)] : [...files, name];
   }, []);
-
+}
 /**
  * 获取文件 Json
  */
@@ -101,8 +95,8 @@ export function getLangJson(fileName) {
 /**
  * 获取配置，支持从vscode和配置文件(优先)中取到配置项
  */
-export const getConfiguration = text => {
-  let value = vscode.workspace.getConfiguration('vscode-i18n-linter').get(text);
+export function getConfiguration (text) {
+  let value = vscode.workspace.getConfiguration('vscode-i18n-flow').get(text);
   let kiwiConfigJson = getConfigFile();
   if (!kiwiConfigJson) {
     return value;
@@ -117,7 +111,7 @@ export const getConfiguration = text => {
 /**
  * 查找kiwi-cli配置文件
  */
-export const getConfigFile = () => {
+export function getConfigFile() {
   let kiwiConfigJson = `${vscode.workspace.workspaceFolders[0].uri.fsPath}/.kiwirc.js`;
   // 先找js
   if (!fs.existsSync(kiwiConfigJson)) {
@@ -133,7 +127,7 @@ export const getConfigFile = () => {
 /**
  * 查找kiwi-linter配置文件
  */
-export const getKiwiLinterConfigFile = () => {
+export function getKiwiLinterConfigFile () {
   let kiwiConfigJson = `${vscode.workspace.workspaceFolders[0].uri.fsPath}/kiwi-config.json`;
   // 先找js
   if (!fs.existsSync(kiwiConfigJson)) {
