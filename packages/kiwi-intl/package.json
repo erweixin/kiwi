@@ -24,6 +24,7 @@
     "lint": "tslint src",
     "autofix": "tslint src --fix",
     "build": "tsc",
+    "build:watch": "tsc -w",
     "demo": "webpack-dev-server --config demo/webpack.config.js",
     "demo-build": "webpack --config demo/webpack.config.js",
     "test:vitest": "vitest --test-timeout=15000"
@@ -31,6 +32,9 @@
   "dependencies": {
     "intl-messageformat": "^2.2.0",
     "lodash.get": "^4.4.2"
+  },
+  "peerDependencies": {
+    "react": "^16.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.42",

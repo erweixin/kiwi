@@ -3,6 +3,7 @@ node_modules
 /coverage
 /reports
 /built
+packages/kiwi-intl/built/src
 /tmp
 .nyc_output/
 .awcache

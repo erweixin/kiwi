@@ -1,53 +1,56 @@
 import IntlMessageFormat from 'intl-messageformat';
-import * as lodashGet from 'lodash.get';
+import lodashGet from 'lodash.get';
 import Observer from './Observer';
 class I18N {
     constructor(lang, metas, defaultKey) {
         this.__lang__ = lang;
         this.__metas__ = metas;
         this.__data__ = metas[lang];
-        this.__defaultKey__ = defaultKey;
+        this.__defaultKey__ = defaultKey || 'zh-CN';
     }
     setLang(lang) {
         this.__lang__ = lang;
         this.__data__ = this.__metas__[lang];
     }
-    getProp(obj, is, value) {
-        if (typeof is === 'string') {
-            is = is.split('.');
+    getProp(obj, path, value) {
+        console.log(path);
+        if (path.length === 1 && value !== undefined) {
+            return (obj[path[0]] = value);
         }
-        if (is.length === 1 && value !== undefined) {
-            return (obj[is[0]] = value);
-        }
-        else if (is.length === 0) {
+        else if (path.length === 0) {
             return obj;
         }
         else {
-            const prop = is.shift();
+            const prop = path.shift();
             if (value !== undefined && obj[prop] === undefined) {
                 obj[prop] = {};
             }
-            return this.getProp(obj[prop], is, value);
+            return this.getProp(obj[prop], path, value);
         }
     }
     template(str, args) {
         if (!str) {
             return '';
         }
-        return str.replace(/\{(.+?)\}/g, (match, p1) => {
-            return this.getProp(Object.assign({}, this.__data__, args), p1);
-        });
+        if (typeof (str) === 'string') {
+            return str.replace(/\{(.+?)\}/g, (match, p1) => {
+                return this.getProp(Object.assign({}, this.__data__, args), p1.split('.'));
+            });
+        }
+        else {
+            return '';
+        }
     }
     get(str, args) {
+        console.log(str);
         let msg = lodashGet(this.__data__, str);
         if (!msg) {
-            msg = lodashGet(this.__metas__[this.__defaultKey__ || 'zh-CN'], str, str);
+            msg = lodashGet(this.__metas__[this.__defaultKey__], str, str);
         }
         if (args) {
             try {
-                msg = new IntlMessageFormat(msg, this.__lang__);
-                msg = msg.format(args);
-                return msg;
+                const formatter = new IntlMessageFormat(msg, this.__lang__);
+                return formatter.format(args);
             }
             catch (err) {
                 console.warn(`kiwi-intl format message failed for key='${str}'`, err);

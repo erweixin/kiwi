@@ -35,60 +35,68 @@ export interface I18NAPI {
 }
 
 class I18N {
-  __lang__: string;
-  __metas__: any;
-  __data__: any;
-  __defaultKey__: string;
-  constructor(lang: string, metas: object, defaultKey?: string) {
+  private __lang__: string;
+  private __metas__: Record<string, any>;
+  private __data__: any;
+  private __defaultKey__: string;
+
+  constructor(lang: string, metas: Record<string, any>, defaultKey?: string) {
     this.__lang__ = lang;
     this.__metas__ = metas;
     this.__data__ = metas[lang];
-    this.__defaultKey__ = defaultKey;
+    this.__defaultKey__ = defaultKey || 'zh-CN';
   }
-  setLang(lang: string) {
+
+  setLang(lang: string): void {
     this.__lang__ = lang;
     this.__data__ = this.__metas__[lang];
   }
-  getProp(obj, is, value?) {
-    if (typeof is === 'string') {
-      is = is.split('.');
-    }
-    if (is.length === 1 && value !== undefined) {
-      return (obj[is[0]] = value);
-    } else if (is.length === 0) {
+
+  private getProp(obj: any, path: string[], value?: any): any {
+    console.log(path);
+    if (path.length === 1 && value !== undefined) {
+      return (obj[path[0]] = value);
+    } else if (path.length === 0) {
       return obj;
     } else {
-      const prop = is.shift();
+      const prop = path.shift();
       if (value !== undefined && obj[prop] === undefined) {
         obj[prop] = {};
       }
-      return this.getProp(obj[prop], is, value);
+      return this.getProp(obj[prop], path, value);
     }
   }
-  template(str, args) {
+
+  template(str: string, args: object): string {
     if (!str) {
       return '';
     }
-    return str.replace(/\{(.+?)\}/g, (match, p1) => {
-      return this.getProp(
-        {
-          ...this.__data__,
-          ...args
-        },
-        p1
-      );
-    });
+    if (typeof(str) === 'string') {
+      return str.replace(/\{(.+?)\}/g, (match, p1) => {
+        return this.getProp(
+          {
+            ...this.__data__,
+            ...args
+          },
+          p1.split('.')
+        );
+      });
+    } else {
+      return ''
+    }
+
   }
-  get(str, args?) {
+
+  get(str: string, args?: object): string {
+    console.log(str)
     let msg = lodashGet(this.__data__, str);
     if (!msg) {
-      msg = lodashGet(this.__metas__[this.__defaultKey__ || 'zh-CN'], str, str);
+      msg = lodashGet(this.__metas__[this.__defaultKey__], str, str);
     }
     if (args) {
       try {
-        msg = new IntlMessageFormat(msg, this.__lang__);
-        msg = msg.format(args);
-        return msg;
+        const formatter = new IntlMessageFormat(msg, this.__lang__);
+        return formatter.format(args);
       } catch (err) {
         console.warn(`kiwi-intl format message failed for key='${str}'`, err);
         return '';
@@ -102,9 +110,7 @@ class I18N {
 const IntlFormat = {
   init: <T>(
     lang: string,
-    metas: {
-      [key: string]: T;
-    },
+    metas: Record<string, T>,
     defaultKey?: string
   ): I18NAPI & T => {
     const i18n = new I18N(lang, metas, defaultKey);

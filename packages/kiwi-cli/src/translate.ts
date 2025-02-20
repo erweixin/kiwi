@@ -144,11 +144,19 @@ async function baiduTranslateTexts(untranslatedTexts, toLang) {
  */
 async function runTranslateApi(dstLang: string, origin: string) {
   const untranslatedTexts = getAllUntranslatedTexts(dstLang);
-  const inverted = invert(untranslatedTexts);
   let mocks = {};
   if (origin === 'Google') {
     mocks = await googleTranslateTexts(untranslatedTexts, dstLang);
   } else if (origin === 'llm') {
+    // 创建源文本到键的映射
+    const sourceToKeys = {};
+    Object.entries(untranslatedTexts).forEach(([key, text]: [string, string]) => {
+      if (!sourceToKeys[text]) {
+        sourceToKeys[text] = [];
+      }
+      sourceToKeys[text].push(key);
+    });
+
     let llmResult = await translateTextByLlm({
       source_lang: 'zh-CN',
       target_lang: dstLang,
@@ -157,8 +165,13 @@ async function runTranslateApi(dstLang: string, origin: string) {
         'Pro Edition': '专业版333' // 可选术语表
       }
     });
+
+    // 为每个翻译结果找到所有对应的键
     llmResult.translations.forEach(item => {
-      mocks[inverted[item.source]] = item.translated;
+      const keys = sourceToKeys[item.source] || [];
+      keys.forEach(key => {
+        mocks[key] = item.translated;
+      });
     });
   } else {
     mocks = await baiduTranslateTexts(untranslatedTexts, dstLang);
@@ -170,7 +183,7 @@ async function runTranslateApi(dstLang: string, origin: string) {
   }
   const content = tsvFormatRows(messagesToTranslate);
   // 输出tsv文件
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const filePath = path.resolve(getLangDir(dstLang), `${dstLang}_translate.tsv`);
     fs.writeFile(filePath, content, err => {
       if (err) {
